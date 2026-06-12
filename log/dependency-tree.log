@@ -1,0 +1,39 @@
+[INFO] Scanning for projects...
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for org.example:Android:jar:1.0-SNAPSHOT
+[WARNING] 'dependencies.dependency.version' for com.browserstack:browserstack-java-sdk:jar is either LATEST or RELEASE (both of them are being deprecated) @ line 82, column 16
+[WARNING] 
+[WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
+[WARNING] 
+[WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
+[WARNING] 
+[WARNING] The POM for org.apache.maven.plugins:maven-jar-plugin:jar:3.5.0 is missing, no dependency information available
+[WARNING] Failed to retrieve plugin descriptor for org.apache.maven.plugins:maven-jar-plugin:3.5.0: Plugin org.apache.maven.plugins:maven-jar-plugin:3.5.0 or one of its dependencies could not be resolved:
+	Cannot access central (https://repo.maven.apache.org/maven2) in offline mode and the artifact org.apache.maven.plugins:maven-jar-plugin:jar:3.5.0 has not been downloaded from it before.
+
+[WARNING] The POM for org.apache.maven.plugins:maven-surefire-plugin:jar:3.5.4 is missing, no dependency information available
+[WARNING] Failed to retrieve plugin descriptor for org.apache.maven.plugins:maven-surefire-plugin:3.5.4: Plugin org.apache.maven.plugins:maven-surefire-plugin:3.5.4 or one of its dependencies could not be resolved:
+	Cannot access central (https://repo.maven.apache.org/maven2) in offline mode and the artifact org.apache.maven.plugins:maven-surefire-plugin:jar:3.5.4 has not been downloaded from it before.
+
+[WARNING] The POM for org.apache.maven.plugins:maven-install-plugin:jar:3.1.4 is missing, no dependency information available
+[WARNING] Failed to retrieve plugin descriptor for org.apache.maven.plugins:maven-install-plugin:3.1.4: Plugin org.apache.maven.plugins:maven-install-plugin:3.1.4 or one of its dependencies could not be resolved:
+	Cannot access central (https://repo.maven.apache.org/maven2) in offline mode and the artifact org.apache.maven.plugins:maven-install-plugin:jar:3.1.4 has not been downloaded from it before.
+
+[WARNING] The POM for org.apache.maven.plugins:maven-deploy-plugin:jar:3.1.4 is missing, no dependency information available
+[WARNING] Failed to retrieve plugin descriptor for org.apache.maven.plugins:maven-deploy-plugin:3.1.4: Plugin org.apache.maven.plugins:maven-deploy-plugin:3.1.4 or one of its dependencies could not be resolved:
+	Cannot access central (https://repo.maven.apache.org/maven2) in offline mode and the artifact org.apache.maven.plugins:maven-deploy-plugin:jar:3.1.4 has not been downloaded from it before.
+
+[WARNING] Plugin not found in any plugin repository: org.apache.maven.plugins:maven-help-plugin
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  0.340 s
+[INFO] Finished at: 2026-06-02T22:20:28+03:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Error resolving version for plugin 'org.apache.maven.plugins:maven-help-plugin' from the repositories [local (/Users/evgeniy/.m2/repository), central (https://repo.maven.apache.org/maven2)]: Plugin not found in any plugin repository -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/PluginVersionResolutionException

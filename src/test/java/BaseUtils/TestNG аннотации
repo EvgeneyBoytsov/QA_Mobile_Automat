@@ -1,0 +1,229 @@
+@BeforeTest в TestNG выполняется один раз перед запуском всех тестовых методов, которые входят в один <test> блок в testng.xml.
+
+То есть если в одном <test> много @Test методов, @BeforeTest сработает один раз до них всех, а не перед каждым методом.
+
+@BeforeTest
+public void setUp() {
+    System.out.println("Перед всеми тестами в текущем <test>");
+}
+
+@Test
+public void test1() {}
+
+@Test
+public void test2() {}
+Порядок:
+
+setUp
+test1
+test2
+Если нужно выполнять код перед каждым тестовым методом, используй:
+
+@BeforeMethod
+public void beforeEachTest() {}
+Коротко:
+
+@BeforeMethod — перед каждым @Test
+@BeforeClass — перед всеми тестами в классе
+@BeforeTest — перед всеми тестами внутри одного <test> из testng.xml
+@BeforeSuite — перед всем suite
+
+@AfterTest в TestNG выполняется после завершения всех тестовых методов, которые входят в один <test> блок в testng.xml.
+
+То есть если в одном <test> много @Test методов, то @AfterTest вызовется один раз после них всех, а не после каждого теста.
+
+Пример:
+
+@Test
+public void test1() {}
+
+@Test
+public void test2() {}
+
+@AfterTest
+public void tearDown() {
+    System.out.println("После всех тестов в текущем <test>");
+}
+Порядок будет примерно такой:
+
+test1
+test2
+tearDown
+Если нужно выполнять код после каждого тестового метода, используй:
+
+@AfterMethod
+public void afterEachTest() {}
+Коротко:
+
+@AfterMethod — после каждого @Test
+@AfterClass — после всех тестов в классе
+@AfterTest — после всех тестов внутри одного <test> из testng.xml
+@AfterSuite — после всего test suite.databind
+
+@BeforeSuite и @AfterSuite в TestNG работают на уровне всего suite, то есть всего запуска, описанного в testng.xml.
+
+Пример testng.xml:
+
+<suite name="Regression Suite">
+    <test name="Login tests">
+        <classes>
+            <class name="tests.LoginTest"/>
+        </classes>
+    </test>
+
+    <test name="Cart tests">
+        <classes>
+            <class name="tests.CartTest"/>
+        </classes>
+    </test>
+</suite>
+@BeforeSuite
+Выполняется один раз перед всеми тестами во всём suite.
+
+@BeforeSuite
+public void beforeSuite() {
+    System.out.println("Запуск перед всем suite");
+}
+Если в suite есть несколько <test>, несколько классов и много @Test методов, @BeforeSuite всё равно выполнится только один раз в самом начале.
+
+@AfterSuite
+Выполняется один раз после всех тестов во всём suite.
+
+@AfterSuite
+public void afterSuite() {
+    System.out.println("Запуск после всего suite");
+}
+Обычно используется для финальной очистки: закрыть общий репорт, удалить тестовые данные, остановить сервисы, закрыть глобальные ресурсы.
+
+Пример порядка:
+
+@BeforeSuite
+
+  @BeforeTest
+    @BeforeClass
+      @BeforeMethod
+        @Test
+      @AfterMethod
+    @AfterClass
+  @AfterTest
+
+  @BeforeTest
+    @BeforeClass
+      @BeforeMethod
+        @Test
+      @AfterMethod
+    @AfterClass
+  @AfterTest
+
+@AfterSuite
+Коротко:
+
+@BeforeSuite — один раз до всего запуска
+@AfterSuite — один раз после всего запуска
+@BeforeTest / @AfterTest — для каждого <test> блока
+@BeforeMethod / @AfterMethod — перед и после каждого тестового метода
+
+dependsOnMethods в TestNG задаёт зависимость одного теста от другого: тест будет запущен только если указанный метод успешно прошёл.
+
+Пример:
+
+@Test
+public void login() {
+    System.out.println("Login");
+}
+
+@Test(dependsOnMethods = "login")
+public void openProfile() {
+    System.out.println("Open profile");
+}
+Порядок:
+
+login
+openProfile
+Если login() упадёт, то openProfile() будет skipped, то есть пропущен.
+
+Можно зависеть от нескольких методов:
+
+@Test(dependsOnMethods = {"login", "createUser"})
+public void deleteUser() {
+    System.out.println("Delete user");
+}
+deleteUser() запустится только если оба метода login и createUser прошли успешно.
+
+Есть ещё alwaysRun = true:
+
+@Test(dependsOnMethods = "login", alwaysRun = true)
+public void openProfile() {
+    System.out.println("Open profile anyway");
+}
+Такой тест TestNG попытается запустить даже если login() упал. Но использовать это нужно осторожно: если тест реально требует логина, он всё равно может упасть.
+
+Чаще всего dependsOnMethods используют, когда тесты логически связаны:
+
+@Test
+public void createOrder() {}
+
+@Test(dependsOnMethods = "createOrder")
+public void payOrder() {}
+
+@Test(dependsOnMethods = "payOrder")
+public void cancelOrder() {}
+Но в автотестах лучше не злоупотреблять зависимостями: хорошие тесты обычно должны быть независимыми друг от друга. Лучше подготовить нужные данные в @BeforeMethod или отдельном helper-методе.
+
+enabled = false означает: отключить тест.
+
+Такой тест:
+
+не будет запускаться;
+будет помечен как skipped / ignored, в зависимости от отчёта;
+не повлияет на результат как failed;
+его @BeforeMethod и @AfterMethod для этого теста обычно не выполняются, потому что сам тест не запускается.
+Пример:
+
+@Test
+public void loginTest() {
+    System.out.println("loginTest");
+}
+
+@Test(enabled = false)
+public void paymentTest() {
+    System.out.println("paymentTest");
+}
+Запустится только:
+
+loginTest
+paymentTest будет отключён.
+
+В TestNG timeout ограничивает максимальное время выполнения теста.
+
+@Test(timeout = 3000)
+public void testPayment() {
+    // тест должен завершиться максимум за 3000 мс
+}
+3000 здесь это миллисекунды, то есть 3 секунды.
+
+Если тест выполняется дольше указанного времени, TestNG остановит его и пометит как failed.
+
+Пример:
+
+@Test(timeout = 2000)
+public void longTest() throws InterruptedException {
+    Thread.sleep(3000);
+}
+Результат: тест упадёт, потому что спит 3 секунды, а лимит 2 секунды.
+
+Можно использовать, чтобы тесты не зависали бесконечно:
+
+@Test(timeout = 10000)
+public void loadPageTest() {
+    // максимум 10 секунд
+}
+Важно:
+
+timeout указывается в миллисекундах;
+применяется к конкретному @Test методу;
+если тест превысил лимит, он считается failed;
+лучше не ставить слишком маленькое значение, иначе тесты могут падать нестабильно.
+Ещё есть timeOut с большой O? В TestNG правильный параметр обычно:
+
+@Test(timeOut = 3000)
