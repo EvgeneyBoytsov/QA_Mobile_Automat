@@ -17,7 +17,7 @@ public class TestCase13 extends BaseTest { // объявляет класс Test
     @BeforeMethod (alwaysRun = true)
     // запускает метод перед каждым тестом, запусти этот configuration method даже если есть зависимости/группы, из-за которых он обычно мог бы быть пропущен.
     public void preCondition() { // объявляет метод preCondition
-        formPage.setActivity(); // перезапускает приложение перед тестом
+        formPage.setActivity(); // перезапускает приложение перед каждым тестом
     }
 
     @Test(dataProvider = "getData") // помечает метод как TestNG-тест
